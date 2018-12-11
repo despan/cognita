@@ -1,6 +1,9 @@
 const Koa = require('koa')
 
 const logger = require('koa-logger')
+const bodyparser = require('koa-bodyparser')
+
+const router = require('./lib/router')
 
 /**
  * Init
@@ -8,12 +11,12 @@ const logger = require('koa-logger')
 
 const app = new Koa()
 
-app.use(logger())
+app
+  .use(logger())
+  .use(bodyparser())
 
-app.use((ctx, next) => {
-  ctx.body = 'ok'
-  return next()
-})
+app
+  .use(router())
 
 /**
  * Bind
