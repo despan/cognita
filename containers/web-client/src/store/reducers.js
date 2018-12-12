@@ -1,13 +1,24 @@
-function token (state, action) {
-  console.log(action)
-  return state || null
-}
+import { handleActions } from 'redux-actions'
 
-function user (state, action) {
-  return state || null
-}
+const token = handleActions({
+  PUT_TOKEN (state, action) {
+    return action.payload
+  },
+  DEL_TOKEN (state, action) {
+    return null
+  }
+}, null)
+
+const details = handleActions({
+  PUT_TOKEN (state, action) {
+    return { username: 'usr' }
+  },
+  DEL_TOKEN (state, action) {
+    return null
+  }
+}, null)
 
 export {
   token,
-  user
+  details
 }

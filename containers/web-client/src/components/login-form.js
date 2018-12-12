@@ -1,24 +1,9 @@
-import React from 'react'
+import React, { Component } from 'react'
 
 import { Form, Input, Button } from 'element-react'
 
-function submitLogin (data = {}) {
-  const url = '/api/tokens'
-
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-    },
-    body: JSON.stringify(data),
-  }
-
-  return fetch(url, options)
-    .then(res => res.json())
-}
-
-class LoginForm extends React.Component {
-  constructor(props) {
+class LoginForm extends Component {
+  constructor (props) {
     super(props)
 
     this.state = {
@@ -28,18 +13,19 @@ class LoginForm extends React.Component {
       }
     }
 
-    this.onSubmit = this.onSubmit.bind(this)
-    this.onChangeOf = this.onChangeOf.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChangeOf = this.handleChangeOf.bind(this)
   }
 
-  onSubmit(event) {
-    submitLogin(this.state.form)
-      .then(console.log)
+  handleSubmit (event) {
+    const { form } = this.state
+
+    this.props.onSubmit(form)
 
     event.preventDefault()
   }
 
-  onChangeOf (key) {
+  handleChangeOf (key) {
     return value => {
       this.setState({
         form: Object.assign(this.state.form, { [key]: value })
@@ -52,14 +38,14 @@ class LoginForm extends React.Component {
       <Form
         className="en-US"
         model={this.state.form}
-        onSubmit={this.onSubmit}>
+        onSubmit={this.handleSubmit}>
 
         <Form.Item label="Username">
           <Input
             name="username"
             type="text"
             value={this.state.form.username}
-            onChange={this.onChangeOf('username')}>
+            onChange={this.handleChangeOf('username')}>
           </Input>
         </Form.Item>
 
@@ -68,7 +54,7 @@ class LoginForm extends React.Component {
             name="password"
             type="password"
             value={this.state.form.password}
-            onChange={this.onChangeOf('password')}>
+            onChange={this.handleChangeOf('password')}>
           </Input>
         </Form.Item>
 

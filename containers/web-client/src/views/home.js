@@ -3,9 +3,7 @@ import { connect } from 'react-redux'
 
 import AuthNav from '../components/auth-nav'
 
-const mapStateToProps = (state, ownProps) => ({
-  user: state.user
-})
+const mapStateToProps = state => state
 
 const mapDispatchToProps = {}
 
@@ -18,7 +16,7 @@ function UserHome ({ username } = {}) {
   return <h3>Welcome back, {username} !</h3>
 }
 
-function GuestHome(props) {
+function GuestHome (props) {
   return (
     <div>
       <h3>Not authenticated.</h3>
@@ -29,10 +27,10 @@ function GuestHome(props) {
 
 class Home extends Component {
   render () {
-    const { user } = this.props
+    const { token, details } = this.props
 
-    const body = user != null
-      ? <UserHome username={user.username}/>
+    const body = token != null
+      ? <UserHome username={details.username}/>
       : <GuestHome/>
 
     return (
