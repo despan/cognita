@@ -8,6 +8,8 @@ import store from './store'
 
 import App from './App'
 
+import 'normalize.css'
+import './style.css'
 
 const rootElement = document.getElementById('root')
 render((

@@ -29,23 +29,14 @@ class LoginForm extends React.Component {
     }
 
     this.onSubmit = this.onSubmit.bind(this)
-    this.onChange = this.onChange.bind(this)
     this.onChangeOf = this.onChangeOf.bind(this)
   }
 
   onSubmit(event) {
-    console.log(event)
     submitLogin(this.state.form)
       .then(console.log)
 
     event.preventDefault()
-  }
-
-  onChange (key, value) {
-    console.log(key, value)
-    this.setState({
-      form: Object.assign(this.state.form, { [key]: value })
-    })
   }
 
   onChangeOf (key) {
@@ -61,9 +52,7 @@ class LoginForm extends React.Component {
       <Form
         className="en-US"
         model={this.state.form}
-        onSubmit={this.onSubmit}
-        labelPosition="left"
-        labelWidth="100">
+        onSubmit={this.onSubmit}>
 
         <Form.Item label="Username">
           <Input
