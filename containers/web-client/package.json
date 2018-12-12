@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://localhost:3000/",
   "dependencies": {
+    "element-react": "^1.4.24",
     "http-proxy-middleware": "^0.19.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",

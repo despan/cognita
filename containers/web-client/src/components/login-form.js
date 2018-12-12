@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { Form, Input, Button } from 'element-react'
+
 function submitLogin (data = {}) {
   const url = '/api/tokens'
 
@@ -20,49 +22,69 @@ class LoginForm extends React.Component {
     super(props)
 
     this.state = {
-      username: '',
-      password: ''
+      form: {
+        username: '',
+        password: ''
+      }
     }
 
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.handleInputChange = this.handleInputChange.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
+    this.onChange = this.onChange.bind(this)
+    this.onChangeOf = this.onChangeOf.bind(this)
   }
 
-  handleSubmit(event) {
-
-    submitLogin(this.state)
+  onSubmit(event) {
+    console.log(event)
+    submitLogin(this.state.form)
       .then(console.log)
 
     event.preventDefault()
   }
 
-  handleInputChange(event) {
-    const { name, value } = event.target
-    this.setState({ [name]: value })
+  onChange (key, value) {
+    console.log(key, value)
+    this.setState({
+      form: Object.assign(this.state.form, { [key]: value })
+    })
+  }
+
+  onChangeOf (key) {
+    return value => {
+      this.setState({
+        form: Object.assign(this.state.form, { [key]: value })
+      })
+    }
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Username
-          <input
+      <Form
+        className="en-US"
+        model={this.state.form}
+        onSubmit={this.onSubmit}
+        labelPosition="left"
+        labelWidth="100">
+
+        <Form.Item label="Username">
+          <Input
             name="username"
             type="text"
-            checked={this.state.username}
-            onChange={this.handleInputChange} />
-        </label>
-        <br />
-        <label>
-          Password
-          <input
+            value={this.state.form.username}
+            onChange={this.onChangeOf('username')}>
+          </Input>
+        </Form.Item>
+
+        <Form.Item label="Password">
+          <Input
             name="password"
             type="password"
-            value={this.state.password}
-            onChange={this.handleInputChange} />
-        </label>
-        <input type="submit"/>
-      </form>
+            value={this.state.form.password}
+            onChange={this.onChangeOf('password')}>
+          </Input>
+        </Form.Item>
+
+        <Button nativeType="submit"> Login </Button>
+      </Form>
     )
   }
 }

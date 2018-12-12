@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Link, Switch, Route } from 'react-router-dom'
 
+import 'element-theme-default'
+
 import HomeView from './views/home'
 import LoginView from './views/login'
 
