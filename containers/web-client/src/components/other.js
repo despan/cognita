@@ -24,14 +24,20 @@ class LoginForm extends React.Component {
       password: ''
     }
 
+    this.meta = {
+      disabled: false
+    }
+
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)
   }
 
   handleSubmit(event) {
+    this.meta.disabled = true
 
     submitLogin(this.state)
       .then(console.log)
+      .then(_ => { this.meta.disabled = false })
 
     event.preventDefault()
   }
@@ -47,6 +53,7 @@ class LoginForm extends React.Component {
         <label>
           Username
           <input
+            disabled={this.meta.disabled}
             name="username"
             type="text"
             checked={this.state.username}
@@ -56,6 +63,7 @@ class LoginForm extends React.Component {
         <label>
           Password
           <input
+            disabled={this.meta.disabled}
             name="password"
             type="password"
             value={this.state.password}
