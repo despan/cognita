@@ -7,8 +7,7 @@ function AppHeader () {
       <Link to='/' className="float-left"> Home </Link>
       <nav className="float-right">
         <ul className="horizontal">
-          <li><Link to='/login'>Login</Link></li>
-          <li><Link to='/signup'>Signup</Link></li>
+          <li><Link to='/auth'>Authenticate</Link></li>
         </ul>
       </nav>
     </header>

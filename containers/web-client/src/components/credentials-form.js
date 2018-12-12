@@ -58,7 +58,7 @@ class LoginForm extends Component {
           </Input>
         </Form.Item>
 
-        <Button nativeType="submit"> Login </Button>
+        <Button nativeType="submit"> Submit </Button>
       </Form>
     )
   }

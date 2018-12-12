@@ -9,8 +9,7 @@ function AuthNav ({ horizontal = false } = {}) {
   return (
     <nav className={className}>
       <ul>
-        <li><Link to='/login'>Login</Link></li>
-        <li><Link to='/signup'>Signup</Link></li>
+        <li><Link to='/auth'>Authenticate</Link></li>
       </ul>
     </nav>
   )

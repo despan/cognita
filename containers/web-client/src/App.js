@@ -6,20 +6,17 @@ import 'element-theme-default'
 import AppHeader from './components/app-header'
 
 import HomeView from './views/home'
-import LoginView from './views/login'
-import SignupView from './views/signup'
+import AuthView from './views/auth'
 
 class App extends Component {
-
   render() {
     return (
-      <div className="App">
+      <div>
         <AppHeader/>
         <main>
           <Switch>
             <Route exact path='/' component={HomeView}/>
-            <Route exact path='/login' component={LoginView}/>
-            <Route exact path='/signup' component={SignupView}/>
+            <Route exact path='/auth' component={AuthView}/>
           </Switch>
         </main>
       </div>
