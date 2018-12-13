@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import { Button, Menu } from 'element-react'
+import { Button } from 'element-react'
 
 function Header ({ onLogout }) {
   return (

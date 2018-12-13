@@ -1,24 +1,28 @@
 import { handleActions } from 'redux-actions'
 
-const token = handleActions({
-  PUT_TOKEN (state, action) {
-    return action.payload
-  },
-  DROP_TOKEN (state, action) {
-    return null
-  }
-}, null)
+import * as R from 'ramda'
 
-const details = handleActions({
-  PUT_TOKEN (state, action) {
-    return { username: 'usr' }
-  },
-  DROP_TOKEN (state, action) {
-    return null
-  }
-}, null)
+import jwtDecode from 'jwt-decode'
 
-export {
-  token,
-  details
+const PUT_TOKEN = (state, action) => {
+  const token = action.payload
+  const { _id } = jwtDecode(token)
+
+  return R.merge(state, { token, _id })
 }
+
+const DROP_TOKEN = (state) => {
+  return {}
+}
+
+const PUT_USER = (state, action) => {
+  return R.assoc('details', action.payload, state)
+}
+
+const reducer = handleActions({
+  PUT_TOKEN,
+  DROP_TOKEN,
+  PUT_USER
+}, {})
+
+export default reducer
