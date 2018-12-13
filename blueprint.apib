@@ -1,0 +1,147 @@
+FORMAT: 1A
+
+# cognita
+
+#### Content type
+
+Content type is set to `application/json` for all API calls.
+
+#### HTTP Methods
+
+- `GET`
+- `POST`
+- `PATCH`
+
+#### HTTP Codes
+
+- `200` - OK status with JSON body
+- `201` - Created
+- `204` - OK status without body
+- `400` - Bad Request
+- `401` - Unauthorized
+- `403` - Forbidden
+- `404` - Not found
+- `409` - Conflict
+- `422` - Bad data
+- `500` - Internal Server Error
+
+#### Auth. mechanism
+
+[JSON Web Tokens](https://jwt.io/) will be used with `Bearer` mechanism to for
+client authorization and access control.
+
+Means all the requests to protected endpoints **MUST** include a proper header 
+or will fail with error 401 `Unauthorized`.
+
+*Example Header*
+
+```
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1MDdmMWY3N2JjZjg2Y2Q3OTk0MzkwMTEifQ.pXGND9MOBHSjeehQ2D8QipUsADgY0uPfxto6kNMH96k
+```
+
+# Group Tokens
+
+## Token [/tokens]
+
++ Attributes (object)
+    + `token`: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1MDdmMWY3N2JjZjg2Y2Q3OTk0MzkwMTEifQ.pXGND9MOBHSjeehQ2D8QipUsADgY0uPfxto6kNMH96k` (string, required)
+
+### Acquire a token [POST]
+
+Login.
+
++ Request
+    + Attributes (object)
+        + Include User Email
+        + Include User Password
+
++ Response 200 (application/json)
+    + Attributes (object)
+        + Include Token
+
+
+# Group Users
+
+## User [/users/{_id}]
+
++ Parameters
+    + _id: `507f1f77bcf86cd799439011` (string, required)
+
+        The ID of the desired user.
+
++ Attributes (object)
+    + `_id`: `507f1f77bcf86cd799439011` (string, required)
+    + Include User Email
+    + Include User Details
+
+### Create a user [POST /users]
+
++ Request
+    + Attributes (object)
+        + Include User Email
+        + Include User Password
+        + Include User Details
+
++ Response 201 (application/json)
+    + Attributes (object)
+        + Include Token
+
++ Response 422 (application/json)
+    + Attributes (object)
+        + errors (object)
+            - email: `invalid email` (string, optional)
+
++ Response 409 (application/json)
+
+### Fetch user details [GET]
+
++ Response 200 (application/json)
+    + Attributes (User)
+
++ Response 404
+
+### Check if user exists [HEAD]
+
++ Response 200
+
++ Response 404
+
+### Update user details [PATCH]
+
++ Request
+    + Attributes (object)
+        - name: `Nyx` (string, optional)
+
++ Response 204
+
+## User List [/users/{?limit,offset}]
+
++ Parameters
+    + limit: `20` (number, optional)
+    + offset: `40` (number, optional)
+
++ Attributes (object)
+    + `links` (object)
+        - `next`: `/limit=20&offset=60` (string, optional)
+        - `prev`: `/limit=20&offset=20` (string, optional)
+    + members (array[User])    
+
+### Discover users [GET]
+
++ Response 200 (application/json)
+    + Attributes (User List)
+
++ Response 404
+
+
+# Data structures
+
+## User Email (object)
++ `email`: `venus@freenet.am` (string, required)
+
+## User Password (object)
++ `password`: `passw0rd` (string, required)
+
+## User Details (object)
++ `name`: `Venus` (string, required)
++ `image`: `46Juzcyx.jpg` (string, optional)
