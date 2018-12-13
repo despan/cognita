@@ -22,6 +22,10 @@ ul.horizontal li {
   margin-right: 15px;
 }
 
+header.navbar {
+  padding: 15px 0;
+}
+
 #root {
   width: 760px;
   margin-right: auto;

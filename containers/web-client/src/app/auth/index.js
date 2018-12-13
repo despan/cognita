@@ -1,10 +1,10 @@
 import { connect } from 'react-redux'
 
+import * as R from 'ramda'
+
 import { acquireToken } from '../../store/actions'
 
 import LoginView from './component'
-
-const mapStateToProps = (state, ownProps) => Object.assign(state, ownProps)
 
 const mapDipatchToProps = dispatch => ({
   acquireToken (data) {
@@ -16,6 +16,6 @@ const mapDipatchToProps = dispatch => ({
   }
 })
 
-const connected = connect(mapStateToProps, mapDipatchToProps)
+const connected = connect(R.identity, mapDipatchToProps)
 
 export default connected(LoginView)
