@@ -16,7 +16,11 @@ const DROP_TOKEN = (state) => {
 }
 
 const PUT_USER = (state, action) => {
-  return R.assoc('details', action.payload, state)
+  const { _id } = action.payload
+
+  const put = R.assocPath(['users', _id])
+
+  return put(action.payload, state)
 }
 
 const reducer = handleActions({

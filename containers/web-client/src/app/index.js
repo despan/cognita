@@ -9,8 +9,8 @@ import { dropToken } from '../store/actions'
 
 import Header from '../components/app-header.jsx'
 
-import HomeView from './home'
 import AuthView from './auth'
+import UserView from './user'
 
 const mapDipatchToProps = dispatch => ({
   logoutUser (data) {
@@ -21,8 +21,10 @@ const mapDipatchToProps = dispatch => ({
 const connected = connect(R.identity, mapDipatchToProps)
 
 function App (props) {
+  const { _id, token } = props
+
   // guard
-  if (!props.token) {
+  if (!token) {
     return <AuthView/>
   }
 
@@ -32,7 +34,16 @@ function App (props) {
       <Header onLogout={props.logoutUser}/>
       <main>
         <Switch>
-          <Route exact path='/' component={HomeView}/>
+          <Route
+            exact
+            path='/'
+            render={props => <UserView {...props} id={_id}/>}
+          />
+          <Route
+            exact
+            path='/users/:id'
+            component={UserView}
+          />
         </Switch>
       </main>
     </div>
