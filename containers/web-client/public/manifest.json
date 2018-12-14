@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Cognita",
+  "name": "Cognita Identity Server",
   "icons": [
     {
       "src": "favicon.ico",
