@@ -52,3 +52,9 @@ Run http tests from root directory
 ```sh
 npm test
 ```
+
+## Tech. Stack
+
+- MongoDB
+- Node.js w/ Koa
+- React + Redux
