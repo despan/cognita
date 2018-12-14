@@ -15,7 +15,7 @@ const DB = require('../db-methods')
 function readUser () {
   const readFrom = db => {
     const col = db.collection('users')
-    return DB.readFromBy(col, '_id')
+    return DB.readFromById(col)
   }
 
   return (ctx, next) => {

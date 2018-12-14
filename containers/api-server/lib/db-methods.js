@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb')
 const R = require('ramda')
 
 /**
- * Inserts a single document into MongoDB.
+ * Read from db
  *
  * readFromById :: col -> str -> any -> doc
  */
@@ -11,9 +11,20 @@ const R = require('ramda')
 const readFromBy = R.curry(
   function (col, key, val) {
     const query = { [key]: val }
+    return col.findOne(query)
+  }
+)
 
-    return col
-      .findOne(query)
+/**
+ * Read from db by id
+ *
+ * readFromById :: col -> id -> doc
+ */
+
+const readFromById = R.curry(
+  function (col, id) {
+    const _id = new ObjectId(id)
+    return col.findOne({ _id })
   }
 )
 
@@ -77,5 +88,6 @@ module.exports = {
   insertInto,
   existsInBy,
   readFromBy,
+  readFromById,
   listFromBy
 }
