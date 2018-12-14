@@ -7,9 +7,9 @@ const Koa = require('koa')
 const logger = require('koa-logger')
 const bodyparser = require('koa-bodyparser')
 
-const mongodb = require('./lib/middlewares/koa-mongodb')
+const { mongodb } = require('./lib/middlewares')
 
-const routes = require('./lib/routes')
+const Router = require('./lib/router')
 
 /**
  * Settings
@@ -22,19 +22,22 @@ const JWT_SECRET = ENV === 'production'
   ? readFileSync('/run/secrets/jwt', 'utf8').trim()
   : getenv('JWT_SECRET', 'nosecret')
 
+const MONGODB_URL = getenv('MONGODB_URL', 'mongodb://localhost:27017/db')
+
 /**
  * Init
  */
 
 const app = new Koa()
 
+const router = new Router({ secret: JWT_SECRET })
+
 app
   .use(logger())
   .use(bodyparser())
-  .use(mongodb())
-
-app
-  .use(routes({ secret: JWT_SECRET }))
+  .use(mongodb(MONGODB_URL))
+  .use(router.routes())
+  .use(router.allowedMethods())
 
 /**
  * Bind
