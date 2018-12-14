@@ -1,4 +1,4 @@
-version: '3'
+version: '3.1'
 
 services:
 
@@ -17,6 +17,8 @@ services:
       - ENV=production
       - MONGODB_URL=mongodb://mongodb/
       - NODE_PORT=80
+    secrets:
+      - jwt
 
   web-client:
     build: ./containers/web-client
@@ -38,3 +40,7 @@ services:
 volumes:
   mongo-data: {}
   client-build: {}
+
+secrets:
+  jwt:
+    file: ./secrets/jwt
