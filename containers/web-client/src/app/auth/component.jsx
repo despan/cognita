@@ -1,25 +1,20 @@
 import React, { Component } from 'react'
 
-import { Layout, Tabs } from 'element-react'
+import { Layout } from 'element-react'
 
-import CredentialsForm from '../../components/credentials-form'
+import LoginForm from '../../components/login-form'
+import SignupForm from '../../components/signup-form'
 
-class Login extends Component {
+class Guard extends Component {
   render() {
     return (
-      <div>
+      <div className="margin-vertical-40">
         <Layout.Row gutter="20">
-          <Layout.Col span="8" offset="8">
-            <Tabs>
-              <Tabs.Pane label="Login" name="login">
-                <CredentialsForm
-                  onSubmit={this.props.acquireToken}/>
-              </Tabs.Pane>
-              <Tabs.Pane label="Signup" name="signup">
-                <CredentialsForm
-                  onSubmit={this.props.signupUser}/>
-              </Tabs.Pane>
-            </Tabs>
+          <Layout.Col span="10">
+            <LoginForm onSubmit={this.props.loginUser}/>
+          </Layout.Col>
+          <Layout.Col span="10" offset="4">
+            <SignupForm onSubmit={this.props.signupUser}/>
           </Layout.Col>
         </Layout.Row>
       </div>
@@ -27,4 +22,4 @@ class Login extends Component {
   }
 }
 
-export default Login
+export default Guard

@@ -18,15 +18,23 @@ services:
       - MONGODB_URL=mongodb://mongodb/
       - NODE_PORT=80
 
+  web-client:
+    build: ./containers/web-client
+    volumes:
+      - client-build:/usr/src/app/build
+    command: npm run build
+
   reverse-proxy:
     restart: always
     build: ./containers/reverse-proxy
     volumes:
       - ./containers/reverse-proxy/config/conf.d:/etc/nginx/conf.d
+      - client-build:/var/www
     ports:
       - "8080:80"
     links:
       - api-server
 
 volumes:
-  mongo-data:
+  mongo-data: {}
+  client-build: {}

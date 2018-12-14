@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 
 import * as R from 'ramda'
 
-import { fetchUser } from '../../store/actions'
+import * as A from '../../store/actions'
 
 import UserContainer from './container'
 
@@ -14,9 +14,8 @@ const mapStateToProps = (state, props) => {
 }
 
 const mapDipatchToProps = dispatch => ({
-  fetchUser (id) {
-    const a = dispatch(fetchUser(id))
-    console.log(a)
+  putUser (data) {
+    dispatch(A.putUser(data))
   }
 })
 
