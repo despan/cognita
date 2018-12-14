@@ -10,7 +10,7 @@ const signToken = require('./sign-token')
 module.exports = (opts = {}) => {
   const router = new Router()
 
-  const secret = 'changeit'
+  const { secret } = opts
 
   const guarded = jwt({ secret })
   const signed = signToken({ secret })
@@ -23,7 +23,8 @@ module.exports = (opts = {}) => {
       signupUser(),
       signed)
     .get('/users/:_id',
-      guarded, fetchUser())
+      guarded,
+      fetchUser())
 
   return router.routes()
 }
