@@ -1,0 +1,20 @@
+{
+  "description": "Identity server",
+  "scripts": {
+    "test": "ava -vs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/despan/cognita.git"
+  },
+  "bugs": {
+    "url": "https://github.com/despan/cognita/issues"
+  },
+  "devDependencies": {
+    "ava": "^0.25.0",
+    "axios": "^0.18.0"
+  },
+  "dependencies": {
+    "jwt-decode": "^2.2.0"
+  }
+}

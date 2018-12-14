@@ -2,7 +2,24 @@
   "name": "@cognita/api-server",
   "version": "0.0.1",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "ava -vs",
     "dev": "nodemon server.js"
+  },
+  "devDependencies": {
+    "ava": "^0.25.0",
+    "mongomem": "^0.1.9"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "getenv": "^0.7.0",
+    "jsonwebtoken": "^8.4.0",
+    "koa": "^2.6.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-jwt": "^3.5.1",
+    "koa-logger": "^3.2.0",
+    "koa-router": "^7.4.0",
+    "mongodb": "^3.1.10",
+    "ramda": "^0.26.1",
+    "ramda-adjunct": "^2.13.0"
   }
 }
