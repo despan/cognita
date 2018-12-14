@@ -29,6 +29,7 @@ docker-compose up
 ```
 
 On build completion open your browser at <http://localhost:8080/> to preview.
+**Note:** Web client requires [Redux DevTools](https://github.com/zalmoxisus/redux-devtools-extension) to function.
 
 ### Development
 
