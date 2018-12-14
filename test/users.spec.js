@@ -21,8 +21,16 @@ test.serial('cycle', async t => {
 
   const { _id } = jwtDecode(token)
 
+  const userUri = `/users/${_id}`
+
+  await t.throws(request.get(userUri))
+
+  const headers = {
+    Authorization: `Bearer ${token}`
+  }
+
   const user = await request
-    .get(`/users/${_id}`)
+    .get(`/users/${_id}`, { headers })
     .then(res => res.data)
 
   t.is(user.email, USER.email)

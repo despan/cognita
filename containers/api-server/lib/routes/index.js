@@ -1,5 +1,7 @@
 const Router = require('koa-router')
 
+const jwt = require('koa-jwt')
+
 const signupUser = require('./signup-user')
 const loginUser = require('./login-user')
 const fetchUser = require('./fetch-user')
@@ -8,7 +10,10 @@ const signToken = require('./sign-token')
 module.exports = (opts = {}) => {
   const router = new Router()
 
-  const signed = signToken({ secret: 'fixit' })
+  const secret = 'changeit'
+
+  const guarded = jwt({ secret })
+  const signed = signToken({ secret })
 
   router
     .post('/tokens',
@@ -18,7 +23,7 @@ module.exports = (opts = {}) => {
       signupUser(),
       signed)
     .get('/users/:_id',
-      fetchUser())
+      guarded, fetchUser())
 
   return router.routes()
 }
