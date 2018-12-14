@@ -11,13 +11,13 @@ module.exports = (opts = {}) => {
   const signed = signToken({ secret: 'fixit' })
 
   router
-    .post('/api/tokens',
+    .post('/tokens',
       loginUser(),
       signed)
-    .post('/api/users',
+    .post('/users',
       signupUser(),
       signed)
-    .get('/api/users/:_id',
+    .get('/users/:_id',
       fetchUser())
 
   return router.routes()

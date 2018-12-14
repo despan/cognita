@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  api-server:
+    build: ./containers/api-server
+    links:
+      - mongodb
+    environment:
+      - ENV=production
+      - MONGODB_URL=mongodb://mongodb/
+      - NODE_PORT=80
+
+  reverse-proxy:
+    restart: always
+    build: ./containers/reverse-proxy
+    volumes:
+      - ./containers/reverse-proxy/config/conf.d:/etc/nginx/conf.d
+    ports:
+      - "8080:80"
+    links:
+      - api-server
+
+volumes:
+  mongo-data:
