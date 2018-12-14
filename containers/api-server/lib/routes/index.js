@@ -1,3 +1,18 @@
-const createUser = require('./create-user')
+const Router = require('koa-router')
 
-module.exports.createUser = createUser
+const signupUser = require('./signup-user')
+const signToken = require('./sign-token')
+
+module.exports = (opts = {}) => {
+  const router = new Router()
+
+  router
+    .post('/api/users',
+      signupUser(),
+      signToken({ secret: 'fixit' }))
+
+  return router.routes()
+}
+
+module.exports.signupUser = signupUser
+module.exports.signToken = signToken

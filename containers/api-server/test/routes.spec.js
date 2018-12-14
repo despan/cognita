@@ -32,6 +32,7 @@ const assertErrorFor = status => t => err => {
 }
 
 const assert409 = assertErrorFor(409)
+const assert422 = assertErrorFor(422)
 
 /**
  * Hooks
@@ -65,6 +66,7 @@ test.beforeEach(async t => {
   // define ctx
   const ctx = {
     db,
+    body: {},
     state: {},
     request: {
       body: {}
@@ -89,35 +91,88 @@ test.beforeEach(async t => {
  * Tests
  */
 
-test('user create - ok', async t => {
-  const { ctx } = t.context
-  const call = t.context.callWith(Routes.createUser())
+test('user signup - ok', async t => {
+  const { ctx, callWith } = t.context
 
   const body = USERS[0]
-
   const partial = { request: { body } }
 
-  const assertState = () => {
-    const { user } = ctx.state
+  const call = callWith(Routes.signupUser())
 
-    t.not(user._id, undefined)
-    t.is(user.email, body.email)
+  const assertState = () => {
+    t.not(ctx.body._id, undefined)
+    t.is(ctx.body.email, body.email)
   }
 
   await call(partial)
     .then(assertState)
 })
 
-test('user create - conflict', async t => {
-  const { ctx } = t.context
-  const call = t.context.callWith(Routes.createUser())
+test('user signup - conflict', async t => {
+  const { ctx, callWith } = t.context
 
   const body = USERS[1]
-
   const partial = { request: { body } }
+
+  const call = callWith(Routes.signupUser())
 
   await t.throws(call(partial))
     .then(assert409(t))
 })
 
-test.todo('user create - bad data')
+test('user signup - bad data', async t => {
+  const { ctx, callWith } = t.context
+
+  const call = callWith(Routes.signupUser())
+
+  const noEmail = { name: 'A' }
+  const noName = { email: 'a@a.com' }
+
+  const of = body => ({ request: { body } })
+
+  await t.throws(call(of(noEmail)))
+    .then(assert422(t))
+
+  await t.throws(call(of(noName)))
+    .then(assert422(t))
+})
+
+test.skip('token sign - ok', async t => {
+  const { ctx, callWith } = t.context
+
+  const secret = 'xxx'
+  const payload = { _id: 'idx' }
+  const partial = { state: { user: payload } }
+
+  const middleware = Routes.signToken({ secret })
+  const call = callWith(middleware)
+
+  const assertBody = () => {
+    const { token } = ctx.body
+
+    t.not(token, undefined)
+  }
+
+  await call(partial)
+    .then(assertBody)
+})
+
+// test.todo('user login', async t => {
+//   const { ctx, callWith } = t.context
+//
+//   const secret = 'xxx'
+//   const payload = { _id: 'idx' }
+//   const partial = { state: { user: payload } }
+//
+//   const middleware = Routes.signToken({ secret })
+//   const call = callWith(middleware)
+//
+//   const assertBody = () => {
+//     const { token } = ctx.body
+//
+//     t.not(token, undefined)
+//   }
+//
+//   await call(partial)
+//     .then(assertBody)
+// })
