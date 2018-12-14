@@ -8,7 +8,7 @@ import SignupForm from '../../components/signup-form'
 class Guard extends Component {
   render() {
     return (
-      <div>
+      <div className="margin-vertical-40">
         <Layout.Row gutter="20">
           <Layout.Col span="10">
             <LoginForm onSubmit={this.props.loginUser}/>

@@ -11,6 +11,26 @@ class SignupForm extends Component {
         email: '',
         name: '',
         password: ''
+      },
+      rules: {
+        name: [
+          { required: true,
+            message: 'Please input a name',
+            trigger: 'blur' },
+        ],
+        email: [
+          { required: true,
+            message: 'Please input email address',
+            trigger: 'blur' },
+          { type: 'email',
+            message: 'Please input correct email address',
+            trigger: 'blur,change' }
+        ],
+        password: [
+          { required: true,
+            message: 'Please input the password',
+            trigger: 'blur' }
+        ]
       }
     }
 
@@ -19,11 +39,18 @@ class SignupForm extends Component {
   }
 
   handleSubmit (event) {
+    event.preventDefault()
+
     const { form } = this.state
 
-    this.props.onSubmit(form)
-
-    event.preventDefault()
+    this.refs.form.validate(valid => {
+      if (valid) {
+        this.props.onSubmit(form)
+      } else {
+        console.log('error submit!!')
+        return false;
+      }
+    })
   }
 
   handleChangeOf (key) {
@@ -37,12 +64,14 @@ class SignupForm extends Component {
   render() {
     return (
       <Form
+        ref="form"
         labelPosition="left"
         labelWidth="100"
         model={this.state.form}
+        rules={this.state.rules}
         onSubmit={this.handleSubmit}>
 
-        <Form.Item label="Name">
+        <Form.Item label="Name" prop="name">
           <Input
             name="name"
             type="text"
@@ -51,7 +80,7 @@ class SignupForm extends Component {
           </Input>
         </Form.Item>
 
-        <Form.Item label="Email">
+        <Form.Item label="Email" prop="email">
           <Input
             name="email"
             type="text"
@@ -60,7 +89,7 @@ class SignupForm extends Component {
           </Input>
         </Form.Item>
 
-        <Form.Item label="Password">
+        <Form.Item label="Password" prop="password">
           <Input
             name="password"
             type="password"
