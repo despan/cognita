@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 
 import { Form, Input, Button } from 'element-react'
 
-class LoginForm extends Component {
+class SignupForm extends Component {
   constructor (props) {
     super(props)
 
     this.state = {
       form: {
-        username: '',
+        email: '',
+        name: '',
         password: ''
       }
     }
@@ -36,16 +37,26 @@ class LoginForm extends Component {
   render() {
     return (
       <Form
-        className="en-US"
+        labelPosition="left"
+        labelWidth="100"
         model={this.state.form}
         onSubmit={this.handleSubmit}>
 
-        <Form.Item label="Username">
+        <Form.Item label="Name">
           <Input
-            name="username"
+            name="name"
             type="text"
-            value={this.state.form.username}
-            onChange={this.handleChangeOf('username')}>
+            value={this.state.form.name}
+            onChange={this.handleChangeOf('name')}>
+          </Input>
+        </Form.Item>
+
+        <Form.Item label="Email">
+          <Input
+            name="email"
+            type="text"
+            value={this.state.form.email}
+            onChange={this.handleChangeOf('email')}>
           </Input>
         </Form.Item>
 
@@ -58,10 +69,15 @@ class LoginForm extends Component {
           </Input>
         </Form.Item>
 
-        <Button nativeType="submit"> Submit </Button>
+        <Form.Item>
+          <Button nativeType="submit">
+            Signup
+          </Button>
+        </Form.Item>
       </Form>
     )
   }
 }
 
-export default LoginForm
+export default SignupForm
+

@@ -1,7 +1,6 @@
 import Axios from 'axios'
 
-const request = Axios
-  .create({ baseURL: '/api' })
+const request = Axios.create({ baseURL: '/api' })
 
 /**
  * Methods
