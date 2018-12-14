@@ -1,6 +1,26 @@
 import Axios from 'axios'
 
+import * as R from 'ramda'
+
+/**
+ * Setup
+ */
+
 const request = Axios.create({ baseURL: '/api' })
+
+request.interceptors.request.use(
+  config => {
+    const token = sessionStorage.getItem('cognita')
+
+    const headers = R.merge(
+      config.headers,
+      { Authorization: `Bearer ${token}` }
+    )
+
+    return R.assoc('headers', headers, config)
+  },
+  error => Promise.reject(error)
+)
 
 /**
  * Methods
