@@ -4,6 +4,8 @@ import { MongoDBServer } from 'mongomem'
 
 import { MongoClient, ObjectId } from 'mongodb'
 
+import { hashSync } from 'bcryptjs'
+
 import createError from 'http-errors'
 import httpAssert from 'http-assert'
 
@@ -31,6 +33,7 @@ const assertErrorFor = status => t => err => {
   t.is(err.status, status, `is ${status}`)
 }
 
+const assert401 = assertErrorFor(401)
 const assert409 = assertErrorFor(409)
 const assert422 = assertErrorFor(422)
 
@@ -56,11 +59,13 @@ test.beforeEach(async t => {
 
   const user = USERS[1]
   await users
-    .insertOne({ email: user.email })
+    .insertOne({ email: user.email,
+                 name: user.name })
     .then(res => {
       const _id = res.insertedId
       return passwords
-        .insertOne({ _id, password: user.password })
+        .insertOne({ _id,
+                     hash: hashSync(user.password, 10) })
     })
 
   // define ctx
@@ -137,6 +142,52 @@ test('user signup - bad data', async t => {
     .then(assert422(t))
 })
 
+test('user login - ok', async t => {
+  const { ctx, callWith } = t.context
+
+  const body = USERS[1]
+  const partial = { request: { body } }
+
+  const middleware = Routes.loginUser()
+  const call = callWith(middleware)
+
+  const assertBody = () => {
+    t.pass()
+  }
+
+  await call(partial)
+    .then(assertBody)
+})
+
+test('user login - unauthorized', async t => {
+  const { ctx, callWith } = t.context
+
+  const middleware = Routes.loginUser()
+  const call = callWith(middleware)
+
+  const of = body => ({ request: { body } })
+
+  const badEmail = of(USERS[0])
+  await t.throws(call(badEmail))
+    .then(assert401)
+
+  const badPass = of({ email: 'b@b.com', password: 'badPass' })
+  await t.throws(call(badPass))
+    .then(assert401)
+})
+
+test('user login - bad data', async t => {
+  const { ctx, callWith } = t.context
+
+  const middleware = Routes.loginUser()
+  const call = callWith(middleware)
+
+  const of = body => ({ request: { body } })
+
+  const invalid = of({ email: 'b@b.com' })
+  await t.throws(call(invalid))
+})
+
 test.skip('token sign - ok', async t => {
   const { ctx, callWith } = t.context
 
@@ -156,23 +207,3 @@ test.skip('token sign - ok', async t => {
   await call(partial)
     .then(assertBody)
 })
-
-// test.todo('user login', async t => {
-//   const { ctx, callWith } = t.context
-//
-//   const secret = 'xxx'
-//   const payload = { _id: 'idx' }
-//   const partial = { state: { user: payload } }
-//
-//   const middleware = Routes.signToken({ secret })
-//   const call = callWith(middleware)
-//
-//   const assertBody = () => {
-//     const { token } = ctx.body
-//
-//     t.not(token, undefined)
-//   }
-//
-//   await call(partial)
-//     .then(assertBody)
-// })
