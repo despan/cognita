@@ -1,7 +1,5 @@
 import { connect } from 'react-redux'
 
-import * as R from 'ramda'
-
 import * as A from '../../store/actions'
 
 import * as API from '../../api'

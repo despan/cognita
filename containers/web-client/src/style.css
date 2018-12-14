@@ -12,6 +12,10 @@
   float: right
 }
 
+.align-center {
+  text-align: center;
+}
+
 ul.horizontal {
   list-style: none;
   margin: 0 20px;

@@ -5,6 +5,8 @@ import { connect } from 'react-redux'
 
 import * as R from 'ramda'
 
+import jwtDecode from 'jwt-decode'
+
 import { dropToken } from '../store/actions'
 
 import Header from '../components/app-header.jsx'
@@ -12,21 +14,27 @@ import Header from '../components/app-header.jsx'
 import AuthView from './auth'
 import UserView from './user'
 
-const mapDipatchToProps = dispatch => ({
-  logoutUser (data) {
-    dispatch(dropToken(data))
+const mapStateToProps = (state, ownProps) => {
+  return R.merge(state, ownProps)
+}
+
+const mapDispatchToProps = dispatch => ({
+  logoutUser () {
+    dispatch(dropToken())
   }
 })
 
-const connected = connect(R.identity, mapDipatchToProps)
+const connected = connect(mapStateToProps, mapDispatchToProps)
 
 function App (props) {
-  const { _id, token } = props
+  const { token } = props
 
   // guard
   if (!token) {
     return <AuthView/>
   }
+
+  const { _id } = jwtDecode(token)
 
   // protected
   return (

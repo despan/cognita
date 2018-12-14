@@ -2,16 +2,13 @@ import { handleActions } from 'redux-actions'
 
 import * as R from 'ramda'
 
-import jwtDecode from 'jwt-decode'
-
 const PUT_TOKEN = (state, action) => {
   const token = action.payload
-  const { _id } = jwtDecode(token)
 
   // used for API requests
   sessionStorage.setItem('cognita', token)
 
-  return R.merge(state, { token, _id })
+  return R.assoc('token', token, state)
 }
 
 const DROP_TOKEN = (state) => {
