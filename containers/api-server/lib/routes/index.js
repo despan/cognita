@@ -2,6 +2,7 @@ const Router = require('koa-router')
 
 const signupUser = require('./signup-user')
 const loginUser = require('./login-user')
+const fetchUser = require('./fetch-user')
 const signToken = require('./sign-token')
 
 module.exports = (opts = {}) => {
@@ -17,4 +18,5 @@ module.exports = (opts = {}) => {
 
 module.exports.signupUser = signupUser
 module.exports.loginUser = loginUser
+module.exports.fetchUser = fetchUser
 module.exports.signToken = signToken

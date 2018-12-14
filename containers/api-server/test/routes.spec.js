@@ -58,14 +58,16 @@ test.beforeEach(async t => {
   const passwords = db.collection('passwords')
 
   const user = USERS[1]
-  await users
+  const doc = await users
     .insertOne({ email: user.email,
                  name: user.name })
     .then(res => {
       const _id = res.insertedId
+
       return passwords
         .insertOne({ _id,
                      hash: hashSync(user.password, 10) })
+        .then(_ => users.findOne({ _id }))
     })
 
   // define ctx
@@ -90,7 +92,11 @@ test.beforeEach(async t => {
       .then(_ => context)
   }
 
-  t.context = { ctx, callWith }
+  t.context = {
+    ctx,
+    callWith,
+    stored: [ doc ]
+  }
 })
 
 /**
@@ -207,4 +213,30 @@ test('token sign - ok', async t => {
 
   await call(partial)
     .then(assertBody)
+})
+
+test('fetch user - ok', async t => {
+  const { callWith, stored } = t.context
+
+  const call = callWith(Routes.fetchUser())
+
+  const [ doc ] = stored
+  const partial = { params: { _id: doc._id } }
+
+  const assertBody = ctx => {
+    t.deepEqual(ctx.body, doc)
+  }
+
+  await call(partial)
+    .then(assertBody)
+})
+
+test('fetch user - not found', async t => {
+  const { callWith, stored } = t.context
+
+  const call = callWith(Routes.fetchUser())
+
+  const partial = { params: { _id: 'delusional' } }
+
+  await t.throws(call(partial))
 })
