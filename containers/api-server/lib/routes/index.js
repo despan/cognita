@@ -8,10 +8,17 @@ const signToken = require('./sign-token')
 module.exports = (opts = {}) => {
   const router = new Router()
 
+  const signed = signToken({ secret: 'fixit' })
+
   router
+    .post('/api/tokens',
+      loginUser(),
+      signed)
     .post('/api/users',
       signupUser(),
-      signToken({ secret: 'fixit' }))
+      signed)
+    .get('/api/users/:_id',
+      fetchUser())
 
   return router.routes()
 }

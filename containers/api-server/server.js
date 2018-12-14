@@ -1,9 +1,19 @@
+const getenv = require('getenv')
+
 const Koa = require('koa')
 
 const logger = require('koa-logger')
 const bodyparser = require('koa-bodyparser')
 
-const router = require('./lib/router')
+const mongodb = require('./lib/middlewares/koa-mongodb')
+
+const routes = require('./lib/routes')
+
+/**
+ * Settings
+ */
+
+const PORT = getenv.int('NODE_PORT', 3000)
 
 /**
  * Init
@@ -16,10 +26,11 @@ app
   .use(bodyparser())
 
 app
-  .use(router())
+  .use(mongodb())
+  .use(routes())
 
 /**
  * Bind
  */
 
-app.listen(process.env.NODE_PORT || 3000)
+app.listen(PORT)
