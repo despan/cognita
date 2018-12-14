@@ -9,9 +9,9 @@ const R = require('ramda')
 const signWith = secret => data =>
   jwt.sign(data, secret)
 
-const payloadFromState = R.compose(
+const payloadFrom = R.compose(
   R.pick(['_id']),
-  R.path(['state', 'user'])
+  R.prop('body')
 )
 
 /**
@@ -34,13 +34,9 @@ function signToken (opts = {}) {
       return next()
     }
 
-    const reject = err => {
-      ctx.throw(err)
-    }
-
     return Promise
       .resolve(ctx)
-      .then(payloadFromState)
+      .then(payloadFrom)
       .then(signed)
       .then(resolve)
   }

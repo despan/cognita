@@ -70,11 +70,7 @@ function readUser () {
         ctx.throw(401)
       }
 
-      // for tests
-      if (!ctx.body) {
-        ctx.body = {}
-      }
-      Object.assign(ctx.body, body)
+      ctx.body = body
 
       return next()
     }

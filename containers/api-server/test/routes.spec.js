@@ -87,6 +87,7 @@ test.beforeEach(async t => {
   const callWith = fn => partial => {
     const context = deepMerge(ctx, partial)
     return fn(context, RA.resolveP)
+      .then(_ => context)
   }
 
   t.context = { ctx, callWith }
@@ -97,16 +98,16 @@ test.beforeEach(async t => {
  */
 
 test('user signup - ok', async t => {
-  const { ctx, callWith } = t.context
+  const { callWith } = t.context
 
   const body = USERS[0]
   const partial = { request: { body } }
 
   const call = callWith(Routes.signupUser())
 
-  const assertState = () => {
-    t.not(ctx.body._id, undefined)
-    t.is(ctx.body.email, body.email)
+  const assertState = ({ body }) => {
+    t.not(body._id, undefined)
+    t.is(body.email, body.email)
   }
 
   await call(partial)
@@ -143,7 +144,7 @@ test('user signup - bad data', async t => {
 })
 
 test('user login - ok', async t => {
-  const { ctx, callWith } = t.context
+  const { callWith } = t.context
 
   const body = USERS[1]
   const partial = { request: { body } }
@@ -188,17 +189,17 @@ test('user login - bad data', async t => {
   await t.throws(call(invalid))
 })
 
-test.skip('token sign - ok', async t => {
-  const { ctx, callWith } = t.context
+test('token sign - ok', async t => {
+  const { callWith } = t.context
 
   const secret = 'xxx'
   const payload = { _id: 'idx' }
-  const partial = { state: { user: payload } }
+  const partial = { body: payload }
 
   const middleware = Routes.signToken({ secret })
   const call = callWith(middleware)
 
-  const assertBody = () => {
+  const assertBody = ctx => {
     const { token } = ctx.body
 
     t.not(token, undefined)

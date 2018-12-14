@@ -127,11 +127,7 @@ function storeUser () {
     const { db } = ctx
 
     const resolve = body => {
-      // for tests
-      if (!ctx.body) {
-        ctx.body = {}
-      }
-      Object.assign(ctx.body, body)
+      ctx.body = body
 
       return next()
     }
